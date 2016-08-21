@@ -19,4 +19,5 @@ android {
 }
 dependencies {
     compile files('libs/android-json-rpc-0.3.4.jar')
+    compile 'org.jsoup:jsoup:1.9.2'
 }
