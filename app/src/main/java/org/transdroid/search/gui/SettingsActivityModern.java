@@ -22,6 +22,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 
@@ -62,6 +63,9 @@ public class SettingsActivityModern extends Activity {
 			TorrentSite[] sites = TorrentSite.values();
 			PreferenceCategory publicGroup = (PreferenceCategory) findPreference("header_publicsites");
 			PreferenceCategory privateGroup = (PreferenceCategory) findPreference("header_privatesites");
+
+			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+			StrictMode.setThreadPolicy(policy);
 			for (TorrentSite torrentSite : sites) {
 				if (torrentSite.getAdapter().isPrivateSite()) {
 					privateGroup.addPreference(new PrivateSitePreference(getActivity(), privateCounter++, torrentSite));
