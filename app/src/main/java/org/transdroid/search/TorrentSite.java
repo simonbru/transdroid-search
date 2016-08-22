@@ -24,6 +24,9 @@ import org.transdroid.search.AsiaTorrents.AsiaTorrentsAdapter;
 import org.transdroid.search.BTN.BTNAdapter;
 import org.transdroid.search.WhatCd.WhatCdAdapter;
 import org.transdroid.search.cpasbien.CpasbienAdapter;
+import org.transdroid.search.cpasbien.CpasbienFilmsAdapter;
+import org.transdroid.search.cpasbien.CpasbienMusicAdapter;
+import org.transdroid.search.cpasbien.CpasbienSeriesAdapter;
 import org.transdroid.search.ncore.NcoreAdapter;
 import org.transdroid.search.BitHdtv.BitHdtvAdapter;
 import org.transdroid.search.Danishbits.DanishbitsAdapter;
@@ -81,6 +84,24 @@ public enum TorrentSite {
 		@Override
 		public ISearchAdapter getAdapter() {
 			return new CpasbienAdapter();
+		}
+	},
+	CpasbienSeries {
+		@Override
+		public ISearchAdapter getAdapter() {
+			return new CpasbienSeriesAdapter();
+		}
+	},
+	CpasbienFilms {
+		@Override
+		public ISearchAdapter getAdapter() {
+			return new CpasbienFilmsAdapter();
+		}
+	},
+	CpasbienMusic {
+		@Override
+		public ISearchAdapter getAdapter() {
+			return new CpasbienMusicAdapter();
 		}
 	},
 	Danishbits {

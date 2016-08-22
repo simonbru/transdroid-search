@@ -47,7 +47,6 @@ import java.util.List;
 public class CpasbienAdapter implements ISearchAdapter {
 
 	private static final String DOMAIN = "http://www.cpasbien.cm";
-	private static final String QUERYURL = DOMAIN + "/recherche/%s/page-%d%s";
 	private static final String SORT_COMPOSITE = "";
 	private static final String SORT_SEEDS = ",trie-seeds-d";
 	private static final int MAX_PAGES = 3;
@@ -63,7 +62,7 @@ public class CpasbienAdapter implements ISearchAdapter {
 		for (int page=0; page<MAX_PAGES; page++) {
 			// Build full URL string
 			final String url = String.format(
-					QUERYURL,
+					DOMAIN + getQueryUrl(),
 					URLEncoder.encode(query, "UTF-8"),
 					page,
 					(order == SortOrder.BySeeders ? SORT_SEEDS : SORT_COMPOSITE)
@@ -79,6 +78,10 @@ public class CpasbienAdapter implements ISearchAdapter {
 			}
 		}
 		return results;
+	}
+
+	protected String getQueryUrl() {
+		return "/recherche/%s/page-%d%s";
 	}
 
 	@Override
