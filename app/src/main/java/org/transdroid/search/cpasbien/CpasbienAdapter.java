@@ -21,12 +21,6 @@ package org.transdroid.search.cpasbien;
 import android.content.Context;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,7 +29,10 @@ import org.transdroid.search.ISearchAdapter;
 import org.transdroid.search.SearchResult;
 import org.transdroid.search.SortOrder;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
@@ -85,20 +82,13 @@ public class CpasbienAdapter implements ISearchAdapter {
 	}
 
 	@Override
-	public InputStream getTorrentFile(Context context, String url) throws Exception {
-		// TODO: Rewrite this
-		// Provide a simple file handle to the requested url
-		HttpParams httpparams = new BasicHttpParams();
-		HttpConnectionParams.setConnectionTimeout(httpparams, CONNECTION_TIMEOUT);
-		HttpConnectionParams.setSoTimeout(httpparams, CONNECTION_TIMEOUT);
-		DefaultHttpClient httpclient = new DefaultHttpClient(httpparams);
-		HttpResponse response = httpclient.execute(new HttpGet(url));
-		return response.getEntity().getContent();
-
+	public InputStream getTorrentFile(Context context, String torrentUrl) throws Exception {
+		URL url = new URL(torrentUrl);
+		URLConnection urlConnection = url.openConnection();
+		return new BufferedInputStream(urlConnection.getInputStream());
 	}
 
 	protected List<SearchResult> scrapeResults(Document doc) throws Exception {
-		// TODO: Add pagination ?
 		Elements divs = doc.select("#gauche div.ligne0, div.ligne1");
 		List<SearchResult> results = new ArrayList<>();
 		for (Element div : divs) {
@@ -126,7 +116,7 @@ public class CpasbienAdapter implements ISearchAdapter {
 
 	@Override
 	public String buildRssFeedUrlFromSearch(String query, SortOrder order) {
-		// The Pirate Bay doesn't support RSS feeds
+		// Cpasbien doesn't support RSS feeds
 		return null;
 	}
 
