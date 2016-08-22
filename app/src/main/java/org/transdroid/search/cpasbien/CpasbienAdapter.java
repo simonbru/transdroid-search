@@ -50,10 +50,11 @@ import java.util.List;
 public class CpasbienAdapter implements ISearchAdapter {
 
 	private static final String DOMAIN = "http://www.cpasbien.cm";
-	private static final String QUERYURL = DOMAIN + "/recherche/%1$s.html%2$s";
+	private static final String QUERYURL = DOMAIN + "/recherche/%s/page-%d%s";
 	private static final String SORT_COMPOSITE = "";
 	private static final String SORT_SEEDS = ",trie-seeds-d";
-	private static final int CONNECTION_TIMEOUT = 20000;
+	private static final int MAX_PAGES = 3;
+	private static final int CONNECTION_TIMEOUT = 20_000;
 
 	@Override
 	public List<SearchResult> search(Context context, String query, SortOrder order, int maxResults) throws Exception {
@@ -61,16 +62,26 @@ public class CpasbienAdapter implements ISearchAdapter {
 			return null;
 		}
 
-		// Build full URL string
-		final String url = String.format(
-				QUERYURL,
-				URLEncoder.encode(query, "UTF-8"),
-				(order == SortOrder.BySeeders? SORT_SEEDS: SORT_COMPOSITE)
-		);
+		ArrayList<SearchResult> results = new ArrayList<>();
+		for (int page=0; page<MAX_PAGES; page++) {
+			// Build full URL string
+			final String url = String.format(
+					QUERYURL,
+					URLEncoder.encode(query, "UTF-8"),
+					page,
+					(order == SortOrder.BySeeders ? SORT_SEEDS : SORT_COMPOSITE)
+			);
 
-		// Start synchronous search
-		Document doc = Jsoup.connect(url).get();
-		return scrapeResults(doc);
+			// Start synchronous search
+			Document doc = Jsoup.connect(url).get();
+			List<SearchResult> pageResults = scrapeResults(doc);
+			if (pageResults.size() > 0) {
+				results.addAll(pageResults);
+			} else {
+				break;
+			}
+		}
+		return results;
 	}
 
 	@Override
