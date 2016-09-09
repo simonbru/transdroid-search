@@ -23,6 +23,7 @@ import android.content.Context;
 import org.transdroid.search.AsiaTorrents.AsiaTorrentsAdapter;
 import org.transdroid.search.BTN.BTNAdapter;
 import org.transdroid.search.WhatCd.WhatCdAdapter;
+import org.transdroid.search.Zooqle.ZooqleAdapter;
 import org.transdroid.search.cpasbien.CpasbienAdapter;
 import org.transdroid.search.cpasbien.CpasbienFilmsAdapter;
 import org.transdroid.search.cpasbien.CpasbienMusicAdapter;
@@ -216,6 +217,12 @@ public enum TorrentSite {
 		@Override
 		public ISearchAdapter getAdapter() {
 			return new YtsAdapter();
+		}
+	},
+	Zooqle {
+		@Override
+		public ISearchAdapter getAdapter() {
+			return new ZooqleAdapter();
 		}
 	};
 
