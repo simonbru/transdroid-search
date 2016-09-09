@@ -38,7 +38,7 @@ public class ZooqleAdapter implements ISearchAdapter {
         }
 
         ArrayList<SearchResult> results = new ArrayList<>();
-        Log.i(ZooqleAdapter.class.getCanonicalName(), Integer.toString(maxResults));
+//        Log.i(ZooqleAdapter.class.getCanonicalName(), Integer.toString(maxResults));
         for (int page=1; page<MAX_PAGES; page++) {
             // Build full URL string
             final String url = String.format(
@@ -49,7 +49,7 @@ public class ZooqleAdapter implements ISearchAdapter {
             );
 
             // Start synchronous search
-            Log.i(ZooqleAdapter.class.getCanonicalName(), url);
+            Log.d(ZooqleAdapter.class.getCanonicalName(), url);
             Document doc = Jsoup.connect(url).get();
             List<SearchResult> pageResults = scrapeResults(doc);
             if (pageResults.size() == 0) {
@@ -80,6 +80,7 @@ public class ZooqleAdapter implements ISearchAdapter {
                 String name = link.text();
                 String detailsUrl = DOMAIN + link.attr("href");
                 String size = tr.select("td:nth-child(4)").first().text();
+                String torrentLink = DOMAIN + tr.select("td a[href^=\"/download/\"]").attr("href");
 
                 int leechers = -1;
                 int seeders = -1;
@@ -95,7 +96,6 @@ public class ZooqleAdapter implements ISearchAdapter {
                     }
                 }
 
-                String torrentLink = null;
                 Date date = null;
                 results.add(new SearchResult(name, torrentLink, detailsUrl, size, date, seeders, leechers));
             } catch (NullPointerException e) {
