@@ -141,7 +141,7 @@ public class TorrentSearchProvider extends ContentProvider {
 
 		String term = "";
 		SortOrder order = SortOrder.BySeeders; // Use BySeeders as default
-		final int maxResults = 30;
+		final int maxResults = 90;
 		TorrentSite site = TorrentSite.Mininova; // Use Mininova as default
 
 		// Retrieve the search term, site and order
